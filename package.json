@@ -1,6 +1,6 @@
 {
   "name": "react-native-flip-menu",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "react-native component,animated menu,like react-native-slider-menu,more functions",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,10 @@
     "menu",
     "animate"
   ],
-  "author": "chezhe17@gmail.com",
+  "author": {
+    "name": "chezhe",
+    "email": "chezhe17@gmail.com"
+  },
   "license": "MIT",
   "devDependencies": {
     "babel": "^6.5.2",

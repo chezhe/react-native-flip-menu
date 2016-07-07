@@ -1,0 +1,30 @@
+{
+  "name": "react-native-flip-menu",
+  "version": "1.0.0",
+  "description": "react-native component,animated menu,like react-native-slider-menu,more functions",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chezhe/react-native-flip-menu.git"
+  },
+  "keywords": [
+    "react-native",
+    "menu",
+    "animate"
+  ],
+  "author": "chezhe17@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-eslint": "^4.1.6",
+    "eslint": "^1.10.3",
+    "eslint-plugin-react": "^3.14.0"
+  },
+  "bugs": {
+    "url": "https://github.com/chezhe/react-native-flip-menu/issues"
+  },
+  "homepage": "https://github.com/chezhe/react-native-flip-menu#readme"
+}

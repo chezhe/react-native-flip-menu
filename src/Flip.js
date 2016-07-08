@@ -15,7 +15,8 @@ class Flip extends Component {
 
     this.state = {
       theta: new Animated.Value(0),
-      count: 0
+      count: 0,
+      animating: false
     }
   }
 
@@ -25,18 +26,24 @@ class Flip extends Component {
 
   _animate() {
     const tmp = this.state.count + 1
+    this.setState({animating: true})
     Animated.timing(this.state.theta, {
       toValue: 180*tmp,
       duration: 1000,
     }).start();
-    this.setState({count: tmp})
+    function count(){
+      const tmp = this.state.count + 1
+      this.setState({count: tmp,animating: false})
+      console.log(tmp);
+    }
+    setTimeout(count.bind(this),1000)
   }
 
   render() {
-    const { A, B } = this.props
-    return (
-      <View style={styles.flipCardContainer}>
-        <Animated.View style={[
+    const { count,animating } = this.state
+    const { Main, Menu } = this.props
+    const awrapper = (
+      <Animated.View style={[
           styles.flipCard,
           {position: 'absolute',
           top: 0,
@@ -47,11 +54,13 @@ class Flip extends Component {
               outputRange: ['0deg', '180deg']
             })},
           ]}]}>
-          <B animate={()=>{
+          <Main animate={()=>{
             this._animate()
           }} />
         </Animated.View>
-        <Animated.View style={[styles.flipCard, {
+    )
+    const bwrapper = (
+      <Animated.View style={[styles.flipCard, {
           position: 'absolute',
           top: 0,
           transform: [
@@ -61,10 +70,29 @@ class Flip extends Component {
               outputRange: ['180deg', '360deg']
             })},
           ]}]}>
-          <A animate={()=>{
+          <Menu animate={()=>{
             this._animate()
           }} />
         </Animated.View>
+    )
+    let content = null;
+    if (animating) {
+      content = (
+        <View>
+          {awrapper}
+          {bwrapper}
+        </View>
+      )
+    }else{
+      content = (
+        <View>
+          {count%2==0 ? awrapper : bwrapper}
+        </View>
+      )
+    }
+    return (
+      <View style={styles.flipCardContainer}>
+        {content}
       </View>
     );
   }

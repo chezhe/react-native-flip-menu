@@ -69,7 +69,7 @@ class Slide3D extends Component {
 
   render() {
     const { animateV } = this.state
-    const { A, B } = this.props 
+    const { Main, Menu } = this.props 
     return (
       <View style={styles.flipCardContainer} {...this._panResponder.panHandlers}>
         <Animated.View style={[styles.flipCard, {backgroundColor: 'red',position:'absolute',left: 0,top: 0},{
@@ -80,7 +80,7 @@ class Slide3D extends Component {
             })
           }]
         }]}>
-          <B animate={()=>{
+          <Menu close={()=>{
             this._toggle()
           }} style={{width: width*1.4}} />
         </Animated.View>
@@ -99,7 +99,7 @@ class Slide3D extends Component {
               ]
             }
           ]}>
-          <A animate={()=>{
+          <Main open={()=>{
             this._toggle()
           }} />
         </Animated.View>
@@ -111,13 +111,17 @@ class Slide3D extends Component {
     const { animateV } = this.state
     let v = -1
     if (animateV==1) {
-      v = 0
+      this.close()
     }else if (animateV==0) {
-      v = 1
+      this.open()
     }
-    if (v!=-1) {
-      this._animate(v)              
-    }
+  }
+
+  open(){
+    this._animate(1)
+  }
+  close(){
+    this._animate(0)
   }
 }
 

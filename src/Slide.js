@@ -26,8 +26,8 @@ class Slide extends Component {
 
   componentWillMount() {
     this._panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+      onStartShouldSetPanResponder: (evt, gestureState) => false,
+      onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
 
@@ -35,13 +35,13 @@ class Slide extends Component {
         
       },
       onPanResponderMove: (evt, gestureState) => {
-        if (gestureState.dx > 0 && gestureState.dx<OFFSET_LIMIT) {
+        if (gestureState.dx > 30 && gestureState.dx<OFFSET_LIMIT) {
           this.setState({slideTo: 'right'})
-          this._animate(gestureState.dx)
+          this._animate(gestureState.dx-30)
         }
-        if (gestureState.dx < 0) {
+        if (gestureState.dx < -30 && -gestureState.dx<OFFSET_LIMIT) {
           this.setState({slideTo: 'left'})
-          this._animate((OFFSET_LIMIT-Math.abs(gestureState.dx)))
+          this._animate((OFFSET_LIMIT-Math.abs(gestureState.dx+30)))
         }
       },
       onPanResponderTerminationRequest: (evt, gestureState) => true,
@@ -67,18 +67,25 @@ class Slide extends Component {
     }).start();
   }
 
+  open(){
+    this._animate(OFFSET_LIMIT)
+  }
+  close(){
+    this._animate(0)
+  }
+
   render() {
-    const { A, B } = this.props
+    const { Main, Menu } = this.props
     return (
       <View style={styles.flipCardContainer} {...this._panResponder.panHandlers}>
         <Animated.View style={[styles.flipCard, {backgroundColor: 'red',position:'absolute',left: 0,top: 0}]}>
-          <B animate={()=>{
+          <Menu close={()=>{
             this._toggle()
           }} style={{width: width*1.4}} />
         </Animated.View>
         <Animated.View style={[
           styles.flipCard,{backgroundColor: 'blue',top: 0,left: this.state.theta}]}>
-          <A animate={()=>{
+          <Main open={()=>{
             this._toggle()
           }} />
         </Animated.View>
@@ -88,13 +95,11 @@ class Slide extends Component {
   _toggle(){
     const { animateV } = this.state
     let v = -1
-    if (animateV==OFFSET_LIMIT) {
-      v = 0
-    }else if (animateV==0) {
-      v = OFFSET_LIMIT
-    }
-    if (v!=-1) {
-      this._animate(v)              
+    console.log(animateV);
+    if (Math.abs(animateV-OFFSET_LIMIT)<5) {
+      this.close()
+    }else if (Math.abs(animateV)<5) {
+      this.open()
     }
   }
 }

@@ -11,8 +11,6 @@ import {
 
 const {height, width} = Dimensions.get('window')
 
-const OFFSET_LIMIT = width*0.5
-
 class Slide extends Component {
   constructor(props){
     super(props)
@@ -20,11 +18,15 @@ class Slide extends Component {
     this.state = {
       theta: new Animated.Value(0),
       slideTo: 'right',
-      animateV: 0
+      animateV: 0,
+      offsetLimit: props.defaultOffset
     }
   }
 
   componentWillMount() {
+    if (this.props.distance!=undefined) {
+      this.setState({offsetLimit: this.props.distance})
+    }
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => false,
       onStartShouldSetPanResponderCapture: (evt, gestureState) => false,
@@ -35,18 +37,20 @@ class Slide extends Component {
         
       },
       onPanResponderMove: (evt, gestureState) => {
-        if (gestureState.dx > 30 && gestureState.dx<OFFSET_LIMIT) {
+        const { offsetLimit } = this.state
+        if (gestureState.dx > 30 && gestureState.dx<offsetLimit) {
           this.setState({slideTo: 'right'})
           this._animate(gestureState.dx-30)
         }
-        if (gestureState.dx < -30 && -gestureState.dx<OFFSET_LIMIT) {
+        if (gestureState.dx < -30 && -gestureState.dx<offsetLimit) {
           this.setState({slideTo: 'left'})
-          this._animate((OFFSET_LIMIT-Math.abs(gestureState.dx+30)))
+          this._animate((offsetLimit-Math.abs(gestureState.dx+30)))
         }
       },
       onPanResponderTerminationRequest: (evt, gestureState) => true,
       onPanResponderRelease: (evt, gestureState) => {
-        this._animate(this.state.slideTo=='left'?0:OFFSET_LIMIT)
+        const { offsetLimit } = this.state
+        this._animate(this.state.slideTo=='left'?0:offsetLimit)
       },
       onPanResponderTerminate: (evt, gestureState) => {
 
@@ -68,7 +72,8 @@ class Slide extends Component {
   }
 
   open(){
-    this._animate(OFFSET_LIMIT)
+    const { offsetLimit } = this.state
+    this._animate(offsetLimit)
   }
   close(){
     this._animate(0)
@@ -93,15 +98,19 @@ class Slide extends Component {
     );
   }
   _toggle(){
-    const { animateV } = this.state
+    const { animateV,offsetLimit } = this.state
     let v = -1
     console.log(animateV);
-    if (Math.abs(animateV-OFFSET_LIMIT)<5) {
+    if (Math.abs(animateV-offsetLimit)<5) {
       this.close()
     }else if (Math.abs(animateV)<5) {
       this.open()
     }
   }
+}
+
+Slide.defaultProps = {
+  defaultOffset: width*0.5
 }
 
 export default Slide;

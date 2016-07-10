@@ -15,7 +15,37 @@ class APP extends Component {
   } 
 }
 
+class Main extends Component {
+  render() {
+    return (
+      <View>
+        <TouchableOpacity onPress={()=>{ 
+        //trigger by button
+          this.props.open()
+        }}>
+          <Text>Open Menu</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+}
+
+class Menu extends Component {
+  render() {
+    return (
+      <View>
+        <TouchableOpacity onPress={()=>{ 
+        //trigger by button
+          this.props.close()
+        }}>
+          <Text>Open Menu</Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+}
 ```
+
 
 #### Common Props
 

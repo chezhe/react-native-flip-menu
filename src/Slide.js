@@ -100,7 +100,6 @@ class Slide extends Component {
   _toggle(){
     const { animateV,offsetLimit } = this.state
     let v = -1
-    console.log(animateV);
     if (Math.abs(animateV-offsetLimit)<5) {
       this.close()
     }else if (Math.abs(animateV)<5) {

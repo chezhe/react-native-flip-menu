@@ -34,7 +34,6 @@ class Flip extends Component {
     function count(){
       const tmp = this.state.count + 1
       this.setState({count: tmp,animating: false})
-      console.log(tmp);
     }
     setTimeout(count.bind(this),1000)
   }
@@ -54,7 +53,7 @@ class Flip extends Component {
               outputRange: ['0deg', '180deg']
             })},
           ]}]}>
-          <Main animate={()=>{
+          <Main open={()=>{
             this._animate()
           }} />
         </Animated.View>
@@ -70,7 +69,7 @@ class Flip extends Component {
               outputRange: ['180deg', '360deg']
             })},
           ]}]}>
-          <Menu animate={()=>{
+          <Menu close={()=>{
             this._animate()
           }} />
         </Animated.View>
